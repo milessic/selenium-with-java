@@ -1,6 +1,7 @@
 package pages;
 
 import utils.ConfigReader;
+import utils.InvoiceItem;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,20 +10,23 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class InvoicePage extends BasePage{
 	String [] xpathsOfTopBarElements = {
 		"//h2[text()='Generator Faktur']",
 		"//button[@id='btn-pdf']",
-		"//p[@id='pdf-status']",
 		"//button[@id='show-example']",
 	};
 
 	String [] xpathsOfFooterElements = {
-		"//button[@id='importJSON']",
-		"//button[@id='exportJSON']",
-		"//a[href='https://github.com/milessic/fv' and text()='fv on GitHub']"
+		"//button[@id='importJson']",
+		"//button[@id='exportJson']",
+		"//a[@href='https://github.com/milessic/fv' and text()='fv on GitHub']"
 	};
 
 	String [] idsOfCorrectionFields = {
@@ -94,6 +98,10 @@ public class InvoicePage extends BasePage{
 	private final By toKrs = By.id("toKrs");
 	private final By toCountry = By.id("toCountry");
 
+	private final By pdfStatusId = By.id("pdf-status");
+	private final By addNewItemXpath = By.xpath("//button[@id='addNewItem']");
+	private final By downloadPdfXpath = By.xpath("//button[@id='btn-pdf']");
+
 
 
 	public InvoicePage(WebDriver driver) {
@@ -114,6 +122,20 @@ public class InvoicePage extends BasePage{
 		}
 	}
 
+	public void fillItems(ArrayList<InvoiceItem> itemsData){
+		// iterate over itemsData
+		for (int i = 0; i < itemsData.size() ; i++){
+			// click add new item button
+			if ( i > 0 ) {
+				clickByXpath(addNewItemXpath);
+			}
+			// iterate over each field
+			for (Map.Entry<String, String> entry : itemsData.get(i).getAsMap().entrySet()){
+				fillText(getItemWebElement(entry.getKey(), i), entry.getValue());
+			}
+		}
+		System.out.println("\tFilled " + itemsData.size() + " items");
+	}
 	public void verifyThatAllTopNavElementsAreVisible(){
 		System.out.println("-Checking TopNav section");
 		for ( String elementId : this.xpathsOfTopBarElements){
@@ -173,6 +195,22 @@ public class InvoicePage extends BasePage{
 
 	public int getNumberOfVisibleRows(){
 		return driver.findElements(By.xpath("//tbody[@id='itemsTable']/tr")).size();
+	}
+
+	private WebElement getItemWebElement(String className, int i){
+		return driver.findElement(By.xpath("(//*[@class='" + className + "'])[" + i+1 + "]"));
+	}
+
+	public void downloadPdf(String expectedMessage){
+		this.clickByXpath(downloadPdfXpath);
+		this.waitUntilMessageIs(expectedMessage);
+
+	}
+
+	public void waitUntilMessageIs(String expectedMessage){
+		this.waitUntilElementByXpathIsVisible("//p[@id='pdf-status' and text()=\"" + expectedMessage + "\"]");
+		System.out.println("Status was as expected: '" + expectedMessage + "'");
+
 	}
 
 }

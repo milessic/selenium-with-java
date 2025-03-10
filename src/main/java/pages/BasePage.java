@@ -13,6 +13,7 @@ public class BasePage {
 
 	public BasePage(WebDriver driver) {
 		this.driver = driver;
+		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 	}
 
@@ -28,11 +29,17 @@ public class BasePage {
 		wait.until(ExpectedConditions.visibilityOf(element)).click();
 	}
 
+	public void clickByXpath(By xpath){
+		WebElement element = driver.findElement(xpath);
+		click(element);
+	}
+
 	public void closePage(){
 		driver.close();
 	}
 
-	protected String getText(WebElement element){
+	protected String getTextById(By id){
+		WebElement element = driver.findElement(id);
 		return wait.until(ExpectedConditions.visibilityOf(element)).getText();
 	}
 
