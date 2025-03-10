@@ -1,5 +1,22 @@
-# Invoice can be generated and file name is proper
+# 1 - Invoice page can be opened and has proper title
 __version 1__
+1. Open page
+2. Verify that title is "Generator Faktur VAT"
+
+# 2 - Proper fields are displayed on page load
+__version 1__
+1. Open page
+2. Verify that all proper pages are displayed on page load 
+
+# 3 - One row is generated on page load")
+__version 1__
+1. Open page
+2. Verify that one row is displayed on page load
+
+
+# 4 - Invoice can be generated and file name is proper
+__version 1__
+__Test data:__ ``invoiceWithOneItem.json``
 1. Open page
 2. Fill all mandatory fields
 3. Fill item details

@@ -1,0 +1,53 @@
+{
+	"headers": {
+		"isMetodaKasowa": true,
+		"isCorrection": false,
+		"invoiceNumber": "1",
+		"invoiceDate": "2025-03-10",
+		"dateOfSales": "2025-03-10",
+		"paymentTerm": "2025-03-10",
+		"paymentMethod": "Przelew bankowy",
+		"bankAccountNumber": "25000000123412341234"
+	},
+	"recipients": {
+		"from": {
+			"fromName": "My Company",
+			"fromName2": "My company cd",
+			"fromStreet": "streeto 12",
+			"fromCity": "01-000 Warsaw",
+			"fromNip": "123123123",
+			"fromRegon": "539123",
+			"fromKrs": "",
+			"fromCountry": "Poland"
+		},
+		"to": {
+			"toName": "Other company",
+			"toName2": "Other company",
+			"toStreet": "Sleja Strota",
+			"toCity": "33-103",
+			"toNip": "9595955959",
+			"toRegon": "11110454",
+			"toKrs": "24144",
+			"toCountry": "Poland"
+		}
+	},
+	"invoiceItems": [
+		{
+			"itemDescription": "Thing",
+			"pkwiuCode": "62",
+			"quantity": 1,
+			"unit": "1",
+			"unitNetPrice": 120,
+			"vatRatePercent": 23
+		}
+	],
+	"summary": {},
+	"correction": {
+		"reason": "",
+		"correctedDocument": ""
+	},
+	"footer": {
+		"authorizedPerson": "John Doe",
+		"note": "Dziękujemy za współpracę!"
+	}
+}
