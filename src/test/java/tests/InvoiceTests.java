@@ -26,46 +26,36 @@ import java.util.Map;
 /**
  * Unit test for simple App.
  */
-public class InvoiceTests
+public class InvoiceTests extends SeleniumTestCase
 {
-	private WebDriver driver;
-	private InvoicePage invoicePage;
-	private Messages messages;
-	private DataGenerator dataGenerator;
+	/*
+	 * from SeleniumTestCase:
+	WebDriver driver;
+	InvoicePage invoicePage;
+	Messages messages;
+	DataGenerator dataGenerator;
+	*/
 
 
-	@BeforeEach
-	public void testSetup(TestInfo testInfo){
-		System.out.println("\n=== STARTING TEST: " + testInfo.getDisplayName() + "\n");
-
-		String downloadFilepath = System.getProperty("user.dir");
-		HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
-		chromePrefs.put("download.default_directory", downloadFilepath);
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--headless");
-		options.setExperimentalOption("prefs", chromePrefs);
-
-		driver = new ChromeDriver(options);
-		invoicePage = new InvoicePage(driver);
-
-		invoicePage.openInvoicePage();
-
-		messages = new Messages();
-
-		dataGenerator = new DataGenerator();
+	public InvoiceTests(){
+		super();
 	}
 
 	@AfterEach
 	public void testTeardown(TestInfo testInfo){
-		invoicePage.closePage();
-		System.out.println("\n=== TEST FINISHED\n--- " + testInfo.getDisplayName());
+		this.performTestTeardown(testInfo);
+	}
+
+	@BeforeEach
+	public void testSetup(TestInfo testInfo){
+		this.performTestSetup(testInfo);
 	}
 
 	@Test
 	@DisplayName("TC-1 - Invoice page can be opened and has proper title")
 	public void testOpenPage(){
 		// version 1
-		assertEquals("Generator Faktur VAT",invoicePage.getTitle());
+		assertEquals("Generator Faktur VAT", invoicePage.getTitle());
 	}
 
 	@Test
