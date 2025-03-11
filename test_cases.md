@@ -25,7 +25,7 @@ __Test data:__ ``invoiceWithOneItem.json``
 5. Verify that 'Faktura '{file_name}' została pobrana' message is visible
 6. Verify that file name follows structure 'Faktura_{invoiceNumber}.pdf'
 
-# Invoice cannot be generated if there are no invoice items
+# 5 - Invoice cannot be generated if there are no invoice items
 __version 1__
 1. Open page
 2. Fill all mandatory fields
@@ -33,7 +33,7 @@ __version 1__
 4. Click 'Generuj Fakturę'
 5. Verify that 'Najpierw dodaj pozycje!' message is visible
 
-# JSON of filled form can be downloaded and it's data is proper
+# 6 - JSON of filled form can be downloaded and it's data is proper
 __version 1__
 1. Open page
 2. Fill all mandatory fields
@@ -42,7 +42,7 @@ __version 1__
 5. Verify that downloaded file name is 'download.json'
 6. Open file and verify it has proper structure and all fields are exported
 
-# JSON of filled form can be downloaded and it's data is proper
+# 7 - JSON of filled form can be downloaded and it's data is proper
 __version 1__
 0. Prepare JSON file for import
 1. Open page
