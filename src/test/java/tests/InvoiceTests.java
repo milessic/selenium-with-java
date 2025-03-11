@@ -5,6 +5,8 @@ import java.io.IOException;
 import pages.InvoicePage;
 import utils.JsonDataReader;
 import utils.PdfReader;
+import utils.Messages;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,7 @@ public class InvoiceTests
 {
 	private WebDriver driver;
 	private InvoicePage invoicePage;
+	private Messages messages;
 
 
 	@BeforeEach
@@ -43,6 +46,8 @@ public class InvoiceTests
 		invoicePage = new InvoicePage(driver);
 
 		invoicePage.openInvoicePage();
+
+		messages = new Messages();
 	}
 
 	@AfterEach
@@ -94,7 +99,7 @@ public class InvoiceTests
 			invoicePage.fillItems(reader.getItems());
 
 			// download invoice
-			invoicePage.downloadPdf("Faktura 'faktura_1.pdf' została pobrana!");
+			invoicePage.downloadPdf(messages.invoiceGenerated);
 
 			// verify that file is downloaded
 			assertTrue(pdfReader.exists(), "Didn't find file 'faktura_1.pdf'!");
