@@ -6,6 +6,7 @@ import pages.InvoicePage;
 import utils.JsonDataReader;
 import utils.PdfReader;
 import utils.Messages;
+import utils.DataGenerator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Unit test for simple App.
@@ -29,6 +31,7 @@ public class InvoiceTests
 	private WebDriver driver;
 	private InvoicePage invoicePage;
 	private Messages messages;
+	private DataGenerator dataGenerator;
 
 
 	@BeforeEach
@@ -48,6 +51,8 @@ public class InvoiceTests
 		invoicePage.openInvoicePage();
 
 		messages = new Messages();
+
+		dataGenerator = new DataGenerator();
 	}
 
 	@AfterEach
@@ -88,10 +93,15 @@ public class InvoiceTests
 		// version 1
 		// load data
 		try {
+			String invoiceNumber = dataGenerator.generateInvoiceName();
         	JsonDataReader reader = new JsonDataReader("src/test/resources/invoiceWithOneItem.json");
-			PdfReader pdfReader = new PdfReader(System.getProperty("user.dir") + "/faktura_1.pdf");
+			PdfReader pdfReader = new PdfReader(System.getProperty("user.dir") + "/faktura_" + invoiceNumber +".pdf");
+
+			// set unique invoice number
+			Map <String, String> invoiceHeaders = reader.getHeaders();
+			invoiceHeaders.put("invoiceNumber", invoiceNumber);
 			// fill form
-			invoicePage.fillFormFields(reader.getHeaders());
+			invoicePage.fillFormFields(invoiceHeaders);
 			invoicePage.fillFormFields(reader.getFrom());
 			invoicePage.fillFormFields(reader.getTo());
 			invoicePage.fillFormFields(reader.getFooter());
@@ -99,18 +109,41 @@ public class InvoiceTests
 			invoicePage.fillItems(reader.getItems());
 
 			// download invoice
-			invoicePage.downloadPdf(messages.invoiceGenerated);
+			invoicePage.downloadPdf(messages.getInvoiceGeneratedMessage(invoiceNumber));
 
 			// verify that file is downloaded
-			assertTrue(pdfReader.exists(), "Didn't find file 'faktura_1.pdf'!");
-			assertTrue(pdfReader.delete(), "Couldn't delete file 'faktura_1.pdf!");
-
-
-
+			assertTrue(pdfReader.exists(), "Didn't find file 'faktura_" + invoiceNumber + ".pdf'!");
+			assertTrue(pdfReader.delete(), "Couldn't delete file 'faktura_" + invoiceNumber + ".pdf!");
 
     	} catch (IOException e) {
     	    e.printStackTrace();
     	    fail("IOException occurred: " + e.getMessage());
     	}
+	}
+
+	@Test
+	@DisplayName("TC-5 - Invoice cannot be generated if there are no invoice items")
+	public void testInvoiceCannotBeGeneratedIfThereAreNoInvoiceItems(){
+		try {
+        	JsonDataReader reader = new JsonDataReader("src/test/resources/invoiceWithOneItem.json");
+			PdfReader pdfReader = new PdfReader(System.getProperty("user.dir") + "/faktura_2.pdf");
+			// fill form
+			invoicePage.fillFormFields(reader.getHeaders());
+			invoicePage.fillFormFields(reader.getFrom());
+			invoicePage.fillFormFields(reader.getTo());
+			invoicePage.fillFormFields(reader.getFooter());
+			// Do not fill items
+
+			// download invoice
+			invoicePage.downloadPdf(messages.getFillAllFieldsMessage());
+
+			// verify that file is not downloaded (it will take some time)
+			assertFalse(pdfReader.exists(), "File has been downloaded without items 'faktura_2.pdf'!");
+
+		} catch (IOException e){
+			e.printStackTrace();
+			fail("IOException occured: " + e.getMessage());
+		}
+
 	}
 }

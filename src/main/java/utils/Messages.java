@@ -1,7 +1,13 @@
 package utils;
 
 public class Messages {
-	public String invoiceGenerated = "Faktura 'faktura_1.pdf' została pobrana!";
-	public String fillAllFields = "Najpierw uzupełnij wszystkie pola!";
+
+	public String getInvoiceGeneratedMessage(String invoiceNumber){
+		return "Faktura 'faktura_" + invoiceNumber + ".pdf' została pobrana!";
+	}
+
+	public String getFillAllFieldsMessage(){
+		return "Najpierw uzupełnij wszystkie pola!";
+	}
 
 }

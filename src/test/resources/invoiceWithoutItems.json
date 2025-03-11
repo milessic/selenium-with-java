@@ -2,6 +2,7 @@
 	"headers": {
 		"isMetodaKasowa": true,
 		"isCorrection": false,
+		"invoiceNumber": "2",
 		"invoiceDate": "2025-03-10",
 		"dateOfSales": "2025-03-10",
 		"paymentTerm": "2025-03-10",
@@ -31,14 +32,6 @@
 		}
 	},
 	"invoiceItems": [
-		{
-			"itemDescription": "Thing",
-			"pkwiuCode": "62",
-			"quantity": 1,
-			"unit": "1",
-			"unitNetPrice": 120,
-			"vatRatePercent": 23
-		}
 	],
 	"summary": {},
 	"correction": {
